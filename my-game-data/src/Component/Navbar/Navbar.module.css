@@ -1,0 +1,22 @@
+.disabled{
+    display:none;
+}
+
+.right{
+   padding-left: 55%;
+
+}
+
+.right a{
+    float:right;
+    padding-right: 35px;
+    color:gray;
+    text-decoration: none;
+    text-align: left;
+}
+
+
+.paddingleft{
+    padding-left:30px;
+}
+
