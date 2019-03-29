@@ -15,9 +15,9 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <MyNavbar/>
-        <Route path='/' exact component={Gameinfo}></Route>
+        <MyNavbar/>       
         <Route path='/settings' component={Settings}></Route>
+        <Route path='/'  component={Gameinfo}></Route>
       </div>
     );
   }

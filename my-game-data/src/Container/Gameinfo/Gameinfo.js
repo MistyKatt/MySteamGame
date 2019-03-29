@@ -2,6 +2,10 @@ import React from 'react'
 import {Load_info} from '../../Store/Actions/SettingAction'
 import {SettingsKey} from '../../Global/Constant'
 import {connect} from 'react-redux'
+import MessageBlock from '../../Component/Basic/MessageBlock/MessageBlock'
+import GameinfoTable from '../GameinfoTable/GameinfoTable'
+import FeaturedinfoTable from '../FeaturedinfoTable/FeaturedinfoTable'
+import {Route} from 'react-router-dom'
 
 class Gameinfo extends React.Component{
  
@@ -11,15 +15,11 @@ class Gameinfo extends React.Component{
     
     render(){
         return(
-            <div>
-                <p>this is Gameinfo:</p> 
-                <p>isVerified: {this.props.isVerified}</p>
-                <p>username: {this.props.username}</p>
-                <p>useremail: {this.props.useremail}</p>
-                <p>games: {this.props.games}</p>
-                <p>gametypes: {this.props.gametypes}</p>
-                <button onClick={this.props.loadSettings}>load Settings</button>
-            </div>
+            <>
+                <MessageBlock {...this.props}></MessageBlock>
+                <Route path="/" exact render={()=><GameinfoTable></GameinfoTable>} ></Route>
+                <Route path="/featured" exact render={()=><FeaturedinfoTable></FeaturedinfoTable>} ></Route>
+            </>
         )
     }
 }
