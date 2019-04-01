@@ -2,106 +2,92 @@ import React from 'react'
 import {Table} from 'react-bootstrap'
 import {connect} from 'react-redux'
 import {SettingsKey} from '../../Global/Constant'
-import axios from '../../Axios'
+import ImageLink from '../../Component/Basic/ImageLink/ImageLink'
+import {Game_info} from '../../Store/Actions/GameinfoAction'
+import {ProgressBar} from 'react-bootstrap'
+import Style from '../Gameinfo/Gameinfo.module.css'
 
 
 
 class GameinfoTable extends React.Component{
  
     state={
-        games:[],
         isLoading:false,
-        firstEnter:true,
     }
     
+    componentDidMount(){
+        if(this.props.isVerified === true&& this.state.isLoading === false&& this.props.count === 0){
+             const appIds = this.props.gameNames
+             if(appIds.length>0){
+                 this.setState({
+                     isLoading:true,
+                 })
+                 this.props.gameinfo(appIds);                
+             }
+        }
+     }
+
     componentDidUpdate(){
-       if(this.props.gameNames.length>0&&this.state.firstEnter === true){
+        if(this.props.isVerified === true && this.state.isLoading === false && this.props.count === 0){
             const appIds = this.props.gameNames
             if(appIds.length>0){
                 this.setState({
                     isLoading:true,
-                    firstEnter:false
                 })
-                this.fetchingDataFromSteam(appIds);
+                this.props.gameinfo(appIds);
             }
        }
-    }
-
-    fetchingDataFromSteam = (appIds)=>{       
-        appIds.forEach(id=>{
-            axios.get('http://localhost:8080/'+id).then(res=>{              
-                const singleData = this.aggregate(res.data[id].data)
-                const state = {...this.state}
-                axios({method:'get',url:'http://localhost:8080/players/'+id}).then((response)=>{
-                    singleData.online = response.data.response.player_count
-                    state.games.push(singleData)
-                    this.setState(state)
-                }).catch(response=>{
-                    singleData.online="unknown"
-                    state.games.push(singleData)
-                    this.setState(state)
-                }) 
-            }).catch(res=>{
-                const state = {...this.state}
-                state.games.push('failed')
-                this.setState(state)
-            })
-        })
-    }
-
-    aggregate = data =>{
-        return{
-            name:data.name,
-            id:data.steam_appid,
-            publisher:data.publishers[0],
-            price:data.is_free?"free":data.price_overview.final_formatted,
-            score:data.metacritic.score,
-            online:'unknown'
-        }
-    }
-    
+    }  
     render(){
         const style = {
             width:'80%',
-            margin:'auto'
+            margin:'auto',
         }
 
-        const tableBody =this.state.games.length>0?this.state.games.map((game)=>game === 'failed'?null:
+        const tableBody = this.props.games.map((game)=>
         <tr key={game.id}>
             <td>{game.name}</td>
             <td>{game.id}</td>
             <td>{game.online}</td>
             <td>{game.score}</td>
             <td>{game.price}</td>
-            <td>{game.publisher}</td>
-        </tr>):null
+            <td><ImageLink url={game.header_image} id={game.id}></ImageLink></td>
+        </tr>)
 
         return(
-        <>
+        (this.props.count === this.props.gameNames.length)?
         <Table responsive style={style}>
-            <thead>
+            <thead >
                 <tr>
                     <th>Games</th>
                     <th>AppId</th>
                     <th>Online</th>
                     <th>rates</th>
                     <th>Price (CAD)</th>
-                    <th>Publisher</th>
+                    <th>Learn more</th>
                 </tr>
             </thead>
             <tbody>
                 {tableBody}
             </tbody>
         </Table>
-        </>
-        )
+        :<ProgressBar className={Style.center} now={100*this.props.count/this.props.gameNames.length} label={"the game is loading now... "+100*this.props.count/this.props.gameNames.length+"%"} />)
     }
 }
 
 const mapStateToProps = state=>{
     return{
       gameNames:state.setting[SettingsKey.games],
+      isVerified:state.setting[SettingsKey.isVerified],
+      games:state.gameinfo.gameinfo,
+      count:state.gameinfo.gameinfoCount
     }
 }
 
-export default connect(mapStateToProps,null)(GameinfoTable)
+const mapDispatchToProps = dispatch=>{
+    return{
+        gameinfo:(id)=>dispatch(Game_info(id)),
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(GameinfoTable)

@@ -1,75 +1,55 @@
 import React from 'react'
 import {Table} from 'react-bootstrap'
-import axios from '../../Axios'
+import {SettingsKey} from '../../Global/Constant'
+import { connect } from 'react-redux';
+import {Game_feature, game_loading} from '../../Store/Actions/GameinfoAction'
+import {ProgressBar} from 'react-bootstrap'
+import Style from '../Gameinfo/Gameinfo.module.css'
 
 
 
 class FeaturedinfoTable extends React.Component{
  
     state={
-        games:[],
         isLoading:false,
-        firstEnter:true,
     }
     
     componentDidMount(){    
-        if(this.state.firstEnter == true)
+        if(this.props.isVerified === true&&this.props.count === 0&&this.state.isLoading === false)
         {
-            this.fetchingDataFromSteam();
+            this.props.gamefeature();
             this.setState({
-                firstEnter:false
+                isLoading:true
             })
         }
     }
 
-    fetchingDataFromSteam = ()=>{       
-            axios.get('http://localhost:8080/featured').then(res=>{              
-                const games = this.aggregate(res.data.featured_win)
-                games.forEach((game,index)=>{
-                    axios({method:'get',url:'http://localhost:8080/players/'+game.id}).then((response)=>{
-                        const tmp = [...games]
-                        tmp[index].online = response.data.response.player_count
-                        this.setState({games: tmp})
-                }) 
-            })           
-            this.setState({games: games})
-            }).catch(res=>{
-                //popup in the future. todo
+    componentDidUpdate(){    
+        if(this.props.isVerified === true&&this.props.count=== 0&&this.state.isLoading === false)
+        {
+            this.props.gamefeature();
+            this.setState({
+                isLoading:true
             })
+        }
     }
-
-    aggregate = data =>{
-        
-        let result = [];
-        data.forEach(game=>{
-            result.push({
-                name:game.name,
-                id:game.id,
-                discount:game.discount_percent,
-                price:game.final_price/100,
-                online:'unknown'
-            })
-        })
-        return result;
-    }
-    
     render(){
         const style = {
             width:'80%',
             margin:'auto'
         }
 
-        const tableBody =this.state.games.length>0?this.state.games.map((game)=>game === 'failed'?null:
+        const tableBody =this.props.games.map((game)=>
         <tr key={game.id}>
             <td>{game.name}</td>
             <td>{game.id}</td>
             <td>{game.online}</td>
             <td>{game.discount}</td>
             <td>{game.price}</td>
-        </tr>):null
+        </tr>)
 
         return(
-        <>
+        (this.props.count === 10)?
         <Table responsive style={style}>
             <thead>
                 <tr>
@@ -84,11 +64,24 @@ class FeaturedinfoTable extends React.Component{
                 {tableBody}
             </tbody>
         </Table>
-        </>
-        )
+        
+        :<ProgressBar className={Style.center} now={10*this.props.count} label={"the feature is loading now... "+10*this.props.count+"%"} />)
+    }
+}
+
+const mapStateToProps = state=>{
+    return{
+      isVerified:state.setting[SettingsKey.isVerified],
+      count:state.gameinfo.gamefeatureCount,
+      games:state.gameinfo.gamefeature
+    }
+}
+
+const mapDispatchToProps = dispatch=>{
+    return{
+        gamefeature:()=>dispatch(Game_feature()),
     }
 }
 
 
-
-export default FeaturedinfoTable
+export default connect(mapStateToProps,mapDispatchToProps)(FeaturedinfoTable)

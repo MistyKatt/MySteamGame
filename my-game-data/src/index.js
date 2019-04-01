@@ -9,6 +9,7 @@ import {createStore,combineReducers,applyMiddleware,compose} from 'redux'
 import settingReducer from './Store/Reducers/SettingReducer'
 import thunk from 'redux-thunk'
 import firebase from 'firebase'
+import gameinfoReducer from './Store/Reducers/GameinfoReducer';
 
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -16,6 +17,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const reducer = combineReducers(
     {
         setting:settingReducer,
+        gameinfo:gameinfoReducer
     }
 )
 
