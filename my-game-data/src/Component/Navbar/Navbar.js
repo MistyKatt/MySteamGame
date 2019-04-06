@@ -5,7 +5,7 @@ import NavbarStyle from './Navbar.module.css'
 
 const MyNavbar = props=>{
     return(
-        <>
+        <div >
         <Navbar bg="light" expand="lg">
         <Link to="/" className={NavbarStyle.paddingleft}>Game Info</Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -17,7 +17,7 @@ const MyNavbar = props=>{
             </Nav>
         </Navbar.Collapse>
         </Navbar>
-        </>
+        </div>
     )
 }
 

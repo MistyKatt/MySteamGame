@@ -3,21 +3,12 @@ import PopupStyle from './Popup.module.css'
 
 class Popup extends React.Component{
 
-    state={
-        hide:false,
-    }
-    
-    close = ()=>{
-        this.setState({
-            hide:true
-        })
-    }
     
     render(){
         return(
-            <div className={this.state.hide?PopupStyle.hide:PopupStyle.block}>
-                <button onClick={this.close}>close it!</button>
-                <h1>the game id is {this.props.game}</h1>
+            <div className={PopupStyle.block}>
+                <span class={PopupStyle.corner} onClick={this.props.close}><i class="far fa-window-close"></i></span>
+                <iframe src={"http://localhost:8080/iframe?src="+this.props.source}></iframe>
             </div>
         )
     }

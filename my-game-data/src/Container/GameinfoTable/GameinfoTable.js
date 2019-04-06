@@ -51,7 +51,7 @@ class GameinfoTable extends React.Component{
             <td>{game.online}</td>
             <td>{game.score}</td>
             <td>{game.price}</td>
-            <td><ImageLink url={game.header_image} id={game.id}></ImageLink></td>
+            <td><ImageLink url={game.header_image} id={game.id} website={game.website}></ImageLink></td>
         </tr>)
 
         return(

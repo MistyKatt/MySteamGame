@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import {Game_feature, game_loading} from '../../Store/Actions/GameinfoAction'
 import {ProgressBar} from 'react-bootstrap'
 import Style from '../Gameinfo/Gameinfo.module.css'
+import ImageLink from '../../Component/Basic/ImageLink/ImageLink'
 
 
 
@@ -46,6 +47,7 @@ class FeaturedinfoTable extends React.Component{
             <td>{game.online}</td>
             <td>{game.discount}</td>
             <td>{game.price}</td>
+            <td><ImageLink url={game.header_image} website={game.website} id={game.id}></ImageLink></td>
         </tr>)
 
         return(
@@ -58,6 +60,7 @@ class FeaturedinfoTable extends React.Component{
                     <th>Online</th>
                     <th>discount</th>
                     <th>Price (CAD)</th>
+                    <th>Learn More</th>
                 </tr>
             </thead>
             <tbody>

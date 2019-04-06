@@ -29,9 +29,9 @@ export const game_loading = (loadingType)=>{
 export const Game_info = (ids)=>{
     return dispatch =>{
         ids.forEach(id=>{
-            axios.get('http://localhost:8080/'+id).then(res=>{              
+            axios.get('https://us-central1-react-learn-65818.cloudfunctions.net/webApi/'+id).then(res=>{              
                     const singleData = aggregateGame(res.data[id].data)
-                    axios({method:'get',url:'http://localhost:8080/players/'+id}).then((response)=>{
+                    axios({method:'get',url:'https://us-central1-react-learn-65818.cloudfunctions.net/webApi/players/'+id}).then((response)=>{
                         singleData.online = response.data.response.player_count
                         dispatch(game_info(singleData,true))
                     }).catch(response=>{
@@ -48,10 +48,10 @@ export const Game_info = (ids)=>{
 export const Game_feature = ()=>{
     return dispatch =>{
         dispatch(game_loading("game_feature"))
-        axios.get('http://localhost:8080/featured').then(res=>{              
+        axios.get('https://us-central1-react-learn-65818.cloudfunctions.net/webApi/featured').then(res=>{              
             const games = aggregateFeature(res.data.featured_win)
             games.forEach((game,index)=>{
-                axios({method:'get',url:'http://localhost:8080/players/'+game.id}).then((response)=>{
+                axios({method:'get',url:'https://us-central1-react-learn-65818.cloudfunctions.net/webApi/players/'+game.id}).then((response)=>{
                     const tmp = [...games]
                     tmp[index].online = response.data.response.player_count
                     dispatch(game_feature(tmp,true))
@@ -72,7 +72,8 @@ const aggregateGame = data =>{
         header_image:data.header_image,
         price:data.is_free?"free":data.price_overview.final_formatted,
         score:data.metacritic.score,
-        online:'unknown'
+        online:'unknown',
+        website:data.website
     }
 }
 
@@ -85,7 +86,9 @@ const aggregateFeature = data =>{
             id:game.id,
             discount:game.discount_percent,
             price:game.final_price/100,
-            online:'unknown'
+            online:'unknown',
+            header_image:game.small_capsule_image,
+            website:"http://www.dota2.com"
         })
     })
     return result;
