@@ -4,8 +4,14 @@ import {UI} from '../../../Global/Constant'
 import './Input.css'
 
 const Input = props =>{        
+    
+    const style = {
+        'margin-left':0,
+        'padding-left':0
+
+    }
     return (
-                <InputGroup className="mb-3 inline">
+                <InputGroup className="mb-3 inline" style={style}>
                     <InputGroup.Prepend>
                     <InputGroup.Text id="inputGroup-sizing-default">{props.text}</InputGroup.Text>
                     </InputGroup.Prepend>

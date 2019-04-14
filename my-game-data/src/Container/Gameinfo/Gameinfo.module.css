@@ -4,3 +4,12 @@
     margin:auto;
     margin-top: 20%;
 }
+
+.onhover{
+    background-color: white;
+}
+
+.onhover:hover{
+    background-color: rgb(212, 212, 212);
+    transition: background-color 0.5s;
+}

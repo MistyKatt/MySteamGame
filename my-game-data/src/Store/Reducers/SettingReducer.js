@@ -1,5 +1,5 @@
 import * as Actions from '../Actions/ActionTypes'
-import {SettingsKey} from '../../Global/Constant'
+import {SettingsKey, Network} from '../../Global/Constant'
 
 const initial = {}
 initial[SettingsKey.username] = ""
@@ -8,6 +8,7 @@ initial[SettingsKey.usertoken] = "123"
 initial[SettingsKey.games] = []
 initial[SettingsKey.gametypes] = []
 initial[SettingsKey.isVerified]=false
+initial[SettingsKey.host] = Network.local
 
 
 

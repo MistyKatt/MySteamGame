@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import MyNavbar from './Component/Navbar/Navbar'
-import {Route, Link} from 'react-router-dom'
+import {Route, Link, Switch} from 'react-router-dom'
 import Gameinfo from './Container/Gameinfo/Gameinfo'
 import Settings from './Container/Settings/Settings'
 
@@ -15,9 +15,11 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <MyNavbar/>       
-        <Route path='/settings' component={Settings}></Route>
-        <Route path='/'  component={Gameinfo}></Route>
+        <MyNavbar/> 
+        <Switch>
+          <Route path='/settings' component={Settings}></Route>
+          <Route path='/'  component={Gameinfo} ></Route>
+        </Switch>      
       </div>
     );
   }

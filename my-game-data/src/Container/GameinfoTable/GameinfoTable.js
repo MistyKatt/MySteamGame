@@ -38,6 +38,22 @@ class GameinfoTable extends React.Component{
             }
        }
     }  
+
+    showExtraGameInfo = (id)=>{
+        const popup = document.getElementById("popup")
+        popup.classList.remove("hiddenPopup")
+        popup.classList.add("showPopup")
+        popup.innerHTML = "<div class='Wrapper'><iframe class='Frame' src='https://steamdb.info/embed/?appid="+id+ "'scrolling='no' frameborder='0'></iframe></div>"
+        const frame = popup.getElementsByTagName("iframe")[0]
+        frame.onmouseout = ()=>this.hideExtraGameInfo(popup)
+    }
+
+    hideExtraGameInfo = (popup)=>{
+        popup.classList.add("hiddenPopup")
+        popup.classList.remove("showPopup")
+        popup.innerHTML = ""
+    }
+
     render(){
         const style = {
             width:'80%',
@@ -45,14 +61,15 @@ class GameinfoTable extends React.Component{
         }
 
         const tableBody = this.props.games.map((game)=>
-        <tr key={game.id}>
+        {
+        return <tr className={Style.onhover}  key={game.id} onTouchStart={e=>{console.log("touch start")}} onClick={()=>{this.showExtraGameInfo(game.id)}}>
             <td>{game.name}</td>
             <td>{game.id}</td>
             <td>{game.online}</td>
             <td>{game.score}</td>
             <td>{game.price}</td>
             <td><ImageLink url={game.header_image} id={game.id} website={game.website}></ImageLink></td>
-        </tr>)
+        </tr>})
 
         return(
         (this.props.count === this.props.gameNames.length)?
@@ -80,7 +97,7 @@ const mapStateToProps = state=>{
       gameNames:state.setting[SettingsKey.games],
       isVerified:state.setting[SettingsKey.isVerified],
       games:state.gameinfo.gameinfo,
-      count:state.gameinfo.gameinfoCount
+      count:state.gameinfo.gameinfoCount,
     }
 }
 

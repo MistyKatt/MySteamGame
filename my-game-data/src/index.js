@@ -21,7 +21,7 @@ const reducer = combineReducers(
     }
 )
 
-const store = createStore(reducer, /* preloadedState, */ composeEnhancers(
+export const store = createStore(reducer, /* preloadedState, */ composeEnhancers(
     applyMiddleware(thunk)
 ));
 

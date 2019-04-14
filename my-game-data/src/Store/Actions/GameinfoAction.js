@@ -1,5 +1,6 @@
 import * as actions from './ActionTypes'
 import axios from '../../Axios'
+import {Network} from '../../Global/Constant'
 
 
 const game_info = (value,success)=>{
@@ -29,9 +30,9 @@ export const game_loading = (loadingType)=>{
 export const Game_info = (ids)=>{
     return dispatch =>{
         ids.forEach(id=>{
-            axios.get('https://us-central1-react-learn-65818.cloudfunctions.net/webApi/'+id).then(res=>{              
+            axios.get(Network.local+"/"+id).then(res=>{              
                     const singleData = aggregateGame(res.data[id].data)
-                    axios({method:'get',url:'https://us-central1-react-learn-65818.cloudfunctions.net/webApi/players/'+id}).then((response)=>{
+                    axios({method:'get',url:Network.local+"/players/"+id}).then((response)=>{
                         singleData.online = response.data.response.player_count
                         dispatch(game_info(singleData,true))
                     }).catch(response=>{
@@ -48,10 +49,10 @@ export const Game_info = (ids)=>{
 export const Game_feature = ()=>{
     return dispatch =>{
         dispatch(game_loading("game_feature"))
-        axios.get('https://us-central1-react-learn-65818.cloudfunctions.net/webApi/featured').then(res=>{              
+        axios.get(Network.local+"/featured").then(res=>{              
             const games = aggregateFeature(res.data.featured_win)
             games.forEach((game,index)=>{
-                axios({method:'get',url:'https://us-central1-react-learn-65818.cloudfunctions.net/webApi/players/'+game.id}).then((response)=>{
+                axios({method:'get',url:Network.local+"/players/"+game.id}).then((response)=>{
                     const tmp = [...games]
                     tmp[index].online = response.data.response.player_count
                     dispatch(game_feature(tmp,true))

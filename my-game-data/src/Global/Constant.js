@@ -14,5 +14,11 @@ export const SettingsKey = {
     usertoken:"usertoken",
     games:"games",
     gametypes:"gametypes",
-    isVerified:"isVerified"
+    isVerified:"isVerified",
+    host:"host"
+}
+
+export const Network = {
+    local:"http://localhost:8080",
+    remote:"https://us-central1-react-learn-65818.cloudfunctions.net/webApi"
 }
