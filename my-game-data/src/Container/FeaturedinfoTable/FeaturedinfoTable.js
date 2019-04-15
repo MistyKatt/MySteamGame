@@ -2,7 +2,7 @@ import React from 'react'
 import {Table} from 'react-bootstrap'
 import {SettingsKey} from '../../Global/Constant'
 import { connect } from 'react-redux';
-import {Game_feature, game_loading} from '../../Store/Actions/GameinfoAction'
+import {Game_feature, Game_add} from '../../Store/Actions/GameinfoAction'
 import {ProgressBar} from 'react-bootstrap'
 import Style from '../Gameinfo/Gameinfo.module.css'
 import ImageLink from '../../Component/Basic/ImageLink/ImageLink'
@@ -34,6 +34,26 @@ class FeaturedinfoTable extends React.Component{
             })
         }
     }
+
+    showExtraGameInfo = (id)=>{
+        const popup = document.getElementById("popup")
+        popup.classList.remove("hiddenPopup")
+        popup.classList.add("showPopup")
+        popup.innerHTML = "<div class='Wrapper'><iframe class='Frame' src='https://steamdb.info/embed/?appid="+id+ "'scrolling='no' frameborder='0'></iframe></div>"
+        const frame = popup.getElementsByTagName("iframe")[0]
+        frame.onmouseout = ()=>this.hideExtraGameInfo(popup)
+    }
+
+    hideExtraGameInfo = (popup)=>{
+        popup.classList.add("hiddenPopup")
+        popup.classList.remove("showPopup")
+        popup.innerHTML = ""
+    }
+
+    Subscribe = (id)=>{
+        this.props.gameadd(id)
+    }
+
     render(){
         const style = {
             width:'80%',
@@ -41,10 +61,10 @@ class FeaturedinfoTable extends React.Component{
         }
 
         const tableBody =this.props.games.map((game)=>
-        <tr key={game.id}>
-            <td>{game.name}</td>
+        <tr className={Style.onhover} key={game.id} onDoubleClick ={()=>{this.showExtraGameInfo(game.id)}}>
+            <td><i onClick={()=>this.Subscribe(game.id)} className="far fa-star" ></i>{game.name}</td>
             <td>{game.id}</td>
-            <td>{game.online}</td>
+            <td>{game.score}</td>
             <td>{game.discount}</td>
             <td>{game.price}</td>
             <td><ImageLink url={game.header_image} website={game.website} id={game.id}></ImageLink></td>
@@ -57,7 +77,7 @@ class FeaturedinfoTable extends React.Component{
                 <tr>
                     <th>Games</th>
                     <th>AppId</th>
-                    <th>Online</th>
+                    <th>hot index</th>
                     <th>discount</th>
                     <th>Price (CAD)</th>
                     <th>Learn More</th>
@@ -83,6 +103,7 @@ const mapStateToProps = state=>{
 const mapDispatchToProps = dispatch=>{
     return{
         gamefeature:()=>dispatch(Game_feature()),
+        gameadd:(id)=>dispatch(Game_add(id))
     }
 }
 

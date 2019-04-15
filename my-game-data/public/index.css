@@ -1,19 +1,22 @@
+
+
 #popup{
     position: absolute;
     width:100%;
-    height:600px;
+    height:100%;
     top:0;
     left:0;
     z-index: 500;
     text-align: center;
-    overflow: hidden;
-    
+    overflow: hidden;   
 }
 
 
 .Frame{
-    width:50%;
-    height:330px;
+    position:fixed;
+    left:20%;
+    width:60%;
+    height:370px;
     margin:auto;  
     margin-top:200px; 
     max-width: 800px;

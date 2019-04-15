@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import MyNavbar from './Component/Navbar/Navbar'
-import {Route, Link, Switch} from 'react-router-dom'
+import {Route,  Switch} from 'react-router-dom'
 import Gameinfo from './Container/Gameinfo/Gameinfo'
 import Settings from './Container/Settings/Settings'
 

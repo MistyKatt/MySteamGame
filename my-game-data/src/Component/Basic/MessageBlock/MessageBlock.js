@@ -1,5 +1,4 @@
 import React from 'react'
-import StaticText from '../StaticText/StaticText'
 import {Alert, Button} from 'react-bootstrap'
 import MessageBlockStyle from './MessageBlock.module.css'
 

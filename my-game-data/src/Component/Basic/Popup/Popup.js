@@ -8,7 +8,6 @@ class Popup extends React.Component{
         return(
             <div className={PopupStyle.block}>
                 <span class={PopupStyle.corner} onClick={this.props.close}><i class="far fa-window-close"></i></span>
-                <iframe src={"http://localhost:8080/iframe?src="+this.props.source}></iframe>
             </div>
         )
     }

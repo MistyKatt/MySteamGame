@@ -20,13 +20,22 @@ const game_feature = (value,success)=>{
     }
 }
 
-export const game_loading = (loadingType)=>{
+const game_add = (value,success)=>{
     return{
-        type:actions.START_LOADING,
-        loadingType:loadingType
+        type:actions.ADD_GAME,
+        singleGame:value,
+        success:success
     }
 }
 
+export const game_del = (id)=>{
+    return{
+        type:actions.DEL_GAME,
+        id:id,
+    }
+}
+
+//load game infos
 export const Game_info = (ids)=>{
     return dispatch =>{
         ids.forEach(id=>{
@@ -46,15 +55,17 @@ export const Game_info = (ids)=>{
     }
 }
 
+//load game features
 export const Game_feature = ()=>{
     return dispatch =>{
-        dispatch(game_loading("game_feature"))
         axios.get(Network.local+"/featured").then(res=>{              
             const games = aggregateFeature(res.data.featured_win)
             games.forEach((game,index)=>{
-                axios({method:'get',url:Network.local+"/players/"+game.id}).then((response)=>{
+                axios({method:'get',url:Network.local+"/"+game.id}).then((response)=>{
                     const tmp = [...games]
-                    tmp[index].online = response.data.response.player_count
+                    const resData = response.data[game.id].data
+                    tmp[index].website =resData.website
+                    tmp[index].score = resData.recommendations?resData.recommendations.total:'not avaliable'
                     dispatch(game_feature(tmp,true))
             }) 
         })           
@@ -66,13 +77,31 @@ export const Game_feature = ()=>{
     }
 }
 
+//load single game
+export const Game_add = (id)=>{
+    return dispatch =>{
+            axios.get(Network.local+"/"+id).then(res=>{              
+                    const singleData = aggregateGame(res.data[id].data)
+                    axios({method:'get',url:Network.local+"/players/"+id}).then((response)=>{
+                        singleData.online = response.data.response.player_count
+                        dispatch(game_add(singleData,true))
+                    }).catch(response=>{
+                        singleData.online="unknown"
+                        dispatch(game_add(singleData,true))
+                    }) 
+                }).catch(res=>{
+                    dispatch(game_add("failed",false))
+                })
+}}
+//del single game
+
 const aggregateGame = data =>{
     return{
         name:data.name,
         id:data.steam_appid,
         header_image:data.header_image,
         price:data.is_free?"free":data.price_overview.final_formatted,
-        score:data.metacritic.score,
+        score:data.recommendations?data.recommendations.total:"not avaliable",
         online:'unknown',
         website:data.website
     }
@@ -87,9 +116,9 @@ const aggregateFeature = data =>{
             id:game.id,
             discount:game.discount_percent,
             price:game.final_price/100,
-            online:'unknown',
             header_image:game.small_capsule_image,
-            website:"http://www.dota2.com"
+            score:'unknown',
+            website:"unknown"
         })
     })
     return result;

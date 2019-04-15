@@ -22,6 +22,9 @@ const StaticText = props =>{
                 </ul>
             )
         }
+        default:{
+            return <h1>hello world</h1>
+        }
     }
 }
 

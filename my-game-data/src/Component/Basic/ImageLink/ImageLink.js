@@ -36,7 +36,7 @@ class ImageLink extends React.Component {
     render(){
         return(
             <div style = {this.blockStyle} onClick={this.popup}>
-                <img src = {this.props.url} style={this.imgStyle}></img>
+                <img src = {this.props.url} style={this.imgStyle} alt="whoops, snapshot not found:("></img>
                 {false?ReactDOM.createPortal(<Popup id={this.props.id} close={this.close} source={this.props.website}></Popup>,document.getElementById('popup')):null}
             </div>
         )

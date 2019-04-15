@@ -33,6 +33,37 @@ const gameinfoReducer = (state = initial, action)=>{
             } 
             return state    
         }
+        case (Actions.ADD_GAME):{
+            if(action.success){
+                let info={
+                    ...state,
+                }
+                let index = -1;
+                info.gameinfo.forEach((e,i)=>{
+                    if(e.id === action.singleGame.id){
+                        index = i;
+                    }
+                })
+                if(index === -1)
+                    info.gameinfo.push(action.singleGame)
+                return info
+            } 
+            return state    
+        }
+        case (Actions.DEL_GAME):{
+                let index = -1;
+                state.gameinfo.forEach((e,i)=>{
+                    if(e.id === action.id){
+                        index = i;
+                    }
+                })
+                const info = {
+                    ...state
+                }
+                if(index !== -1)
+                    info.gameinfo.splice(index,1)               
+                return info   
+        }
        /*
         case (Actions.START_LOADING):{
             if(action.loadingType === "game_info"){

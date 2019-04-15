@@ -1,6 +1,6 @@
 .center{
     height:45px;
-    width:65%;
+    width:60%;
     margin:auto;
     margin-top: 20%;
 }
@@ -9,7 +9,12 @@
     background-color: white;
 }
 
+.onhover i {
+    margin-right: 5px;
+}
+
 .onhover:hover{
     background-color: rgb(212, 212, 212);
     transition: background-color 0.5s;
+    cursor: pointer;
 }
