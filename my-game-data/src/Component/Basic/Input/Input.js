@@ -1,9 +1,11 @@
 import React from 'react'
 import {InputGroup, FormControl} from 'react-bootstrap'
-import {UI} from '../../../Global/Constant'
+import {Constant} from '../../../Global/Constant'
 import './Input.css'
 
 const Input = props =>{        
+    
+    const UI = Constant().UI();
     
     const style = {
         'margin-left':0,

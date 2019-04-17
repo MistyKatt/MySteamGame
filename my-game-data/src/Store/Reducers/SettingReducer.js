@@ -1,14 +1,15 @@
 import * as Actions from '../Actions/ActionTypes'
-import {SettingsKey, Network} from '../../Global/Constant'
+import {Constant} from '../../Global/Constant'
 
 const initial = {}
+const SettingsKey = Constant().SettingsKey();
 initial[SettingsKey.username] = ""
 initial[SettingsKey.useremail] = ""
 initial[SettingsKey.usertoken] = "123"
 initial[SettingsKey.games] = []
 initial[SettingsKey.gametypes] = []
 initial[SettingsKey.isVerified]=false
-initial[SettingsKey.host] = Network.local
+
 
 
 
@@ -28,8 +29,8 @@ const settingReducer = (state = initial, action)=>{
                 }
                 info[SettingsKey.username] = action.value[SettingsKey.username]
                 info[SettingsKey.useremail] = action.value[SettingsKey.useremail]
-                info[SettingsKey.games] = action.value[SettingsKey.games].split(',')
-                info[SettingsKey.gametypes] = action.value[SettingsKey.gametypes].split(',')
+                info[SettingsKey.games] = action.value[SettingsKey.games]
+                info[SettingsKey.gametypes] = action.value[SettingsKey.gametypes] 
                 info[SettingsKey.isVerified] = true
                 return info
             }
@@ -40,7 +41,7 @@ const settingReducer = (state = initial, action)=>{
                 info[SettingsKey.isVerified] = false
                 info[SettingsKey.username] = "unknown"
                 info[SettingsKey.useremail] = "unknown"
-                info[SettingsKey.games] = ["dota 2, Artifact "]
+                info[SettingsKey.games] = ["570"]
                 info[SettingsKey.gametypes] = ["speed"]
                 return info
             }

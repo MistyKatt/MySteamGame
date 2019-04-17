@@ -38,14 +38,8 @@ const gameinfoReducer = (state = initial, action)=>{
                 let info={
                     ...state,
                 }
-                let index = -1;
-                info.gameinfo.forEach((e,i)=>{
-                    if(e.id === action.singleGame.id){
-                        index = i;
-                    }
-                })
-                if(index === -1)
-                    info.gameinfo.push(action.singleGame)
+                info.gameinfo.push(action.singleGame)
+                info.gameinfoCount = info.gameinfoCount+1;
                 return info
             } 
             return state    
@@ -60,8 +54,11 @@ const gameinfoReducer = (state = initial, action)=>{
                 const info = {
                     ...state
                 }
-                if(index !== -1)
-                    info.gameinfo.splice(index,1)               
+                if(index !== -1){
+                    info.gameinfoCount = info.gameinfoCount-1;
+                    info.gameinfo.splice(index,1)     
+                }
+                              
                 return info   
         }
        /*

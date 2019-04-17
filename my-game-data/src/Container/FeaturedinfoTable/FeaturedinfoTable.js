@@ -1,6 +1,6 @@
 import React from 'react'
 import {Table} from 'react-bootstrap'
-import {SettingsKey} from '../../Global/Constant'
+import {Constant} from '../../Global/Constant'
 import { connect } from 'react-redux';
 import {Game_feature, Game_add} from '../../Store/Actions/GameinfoAction'
 import {ProgressBar} from 'react-bootstrap'
@@ -13,6 +13,7 @@ class FeaturedinfoTable extends React.Component{
  
     state={
         isLoading:false,
+        noProgressBar:false
     }
     
     componentDidMount(){    
@@ -51,7 +52,21 @@ class FeaturedinfoTable extends React.Component{
     }
 
     Subscribe = (id)=>{
-        this.props.gameadd(id)
+        let proceed = true;
+        this.props.game_in_list.forEach(e=>{
+            if(e.id === id)
+                proceed = false
+        })
+        if(proceed)
+        {
+            this.props.gameadd(id)
+            this.setState({
+                isLoading:false,
+                noProgressBar:true,
+            })
+        }
+        else
+            alert("this game has been added to my list");
     }
 
     render(){
@@ -71,7 +86,7 @@ class FeaturedinfoTable extends React.Component{
         </tr>)
 
         return(
-        (this.props.count === 10)?
+        (this.props.count === 10||this.state.noProgressBar)?
         <Table responsive style={style}>
             <thead>
                 <tr>
@@ -92,11 +107,15 @@ class FeaturedinfoTable extends React.Component{
     }
 }
 
+
+
 const mapStateToProps = state=>{
+    const SettingsKey = Constant().SettingsKey()
     return{
       isVerified:state.setting[SettingsKey.isVerified],
       count:state.gameinfo.gamefeatureCount,
-      games:state.gameinfo.gamefeature
+      games:state.gameinfo.gamefeature,
+      game_in_list:state.gameinfo.gameinfo
     }
 }
 

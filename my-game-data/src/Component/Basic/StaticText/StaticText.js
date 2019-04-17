@@ -1,8 +1,10 @@
 import React from 'react'
-import {UI} from '../../../Global/Constant'
+import {Constant} from '../../../Global/Constant'
 import StaticTextStyle from './StaticText.module.css'
 
 const StaticText = props =>{
+    
+    const UI = Constant().UI();
     switch(props.type){
         case UI.SINGLELINE:{
             return <p className={StaticTextStyle.singleline}>{props.text+": "+props.value}</p>

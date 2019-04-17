@@ -1,11 +1,12 @@
 import React from 'react'
 import {Load_info} from '../../Store/Actions/SettingAction'
-import {SettingsKey} from '../../Global/Constant'
+import {Constant} from '../../Global/Constant'
 import {connect} from 'react-redux'
 import MessageBlock from '../../Component/Basic/MessageBlock/MessageBlock'
 import GameinfoTable from '../GameinfoTable/GameinfoTable'
 import FeaturedinfoTable from '../FeaturedinfoTable/FeaturedinfoTable'
 import {Route} from 'react-router-dom'
+
 
 class Gameinfo extends React.Component{
  
@@ -25,6 +26,7 @@ class Gameinfo extends React.Component{
 }
 
 const mapStateToProps = state=>{
+    const SettingsKey = Constant().SettingsKey()
     return{
       isVerified:state.setting[SettingsKey.isVerified],
       username:   state.setting[SettingsKey.username] ,

@@ -3,7 +3,7 @@ import firebase from 'firebase'
 import axios from '../../Axios'
 
 
-const save_info = (type,value)=>{
+export const save_info = (type,value)=>{
     return{
         type:actions.SAVE_INFO,
         input_type:type,
@@ -44,3 +44,4 @@ export const Load_info = ()=>{
         })
     }
 }
+

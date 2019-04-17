@@ -1,6 +1,9 @@
 import * as actions from './ActionTypes'
 import axios from '../../Axios'
-import {Network} from '../../Global/Constant'
+import {Constant} from '../../Global/Constant'
+import {Save_info} from '../Actions/SettingAction'
+
+
 
 
 const game_info = (value,success)=>{
@@ -29,19 +32,33 @@ const game_add = (value,success)=>{
 }
 
 export const game_del = (id)=>{
-    return{
-        type:actions.DEL_GAME,
-        id:id,
+    const SettingsKey = Constant().SettingsKey()
+    return (dispatch,getState)=>{
+        const games = getState().setting[SettingsKey.games]
+        let index = -1;
+        games.forEach((e,i)=>{
+            if(id === e)
+                index = i
+        })
+        if(index !== -1)
+            games.splice(index, 1)
+        dispatch(Save_info(SettingsKey.games,games))
+        dispatch({
+            type:actions.DEL_GAME,
+            id:id
+        })
+        
     }
 }
 
 //load game infos
 export const Game_info = (ids)=>{
-    return dispatch =>{
+    const Network = Constant().Network(true)
+    return dispatch=>{
         ids.forEach(id=>{
-            axios.get(Network.local+"/"+id).then(res=>{              
+            axios.get(Network.host+"/"+id).then(res=>{              
                     const singleData = aggregateGame(res.data[id].data)
-                    axios({method:'get',url:Network.local+"/players/"+id}).then((response)=>{
+                    axios({method:'get',url:Network.host+"/players/"+id}).then((response)=>{
                         singleData.online = response.data.response.player_count
                         dispatch(game_info(singleData,true))
                     }).catch(response=>{
@@ -57,11 +74,12 @@ export const Game_info = (ids)=>{
 
 //load game features
 export const Game_feature = ()=>{
+    const Network = Constant().Network(true)
     return dispatch =>{
-        axios.get(Network.local+"/featured").then(res=>{              
+        axios.get(Network.host+"/featured").then(res=>{              
             const games = aggregateFeature(res.data.featured_win)
             games.forEach((game,index)=>{
-                axios({method:'get',url:Network.local+"/"+game.id}).then((response)=>{
+                axios({method:'get',url:Network.host+"/"+game.id}).then((response)=>{
                     const tmp = [...games]
                     const resData = response.data[game.id].data
                     tmp[index].website =resData.website
@@ -79,18 +97,27 @@ export const Game_feature = ()=>{
 
 //load single game
 export const Game_add = (id)=>{
-    return dispatch =>{
-            axios.get(Network.local+"/"+id).then(res=>{              
+    const SettingsKey= Constant().SettingsKey()
+    const Network = Constant().Network(true)
+    return (dispatch,getState) =>{
+            axios.get(Network.host+"/"+id).then(res=>{              
                     const singleData = aggregateGame(res.data[id].data)
-                    axios({method:'get',url:Network.local+"/players/"+id}).then((response)=>{
+                    axios({method:'get',url:Network.host+"/players/"+id}).then((response)=>{
                         singleData.online = response.data.response.player_count
                         dispatch(game_add(singleData,true))
+                        const games = getState().setting[SettingsKey.games]
+                        games.push(id)
+                        dispatch(Save_info(SettingsKey.games,games))
                     }).catch(response=>{
                         singleData.online="unknown"
                         dispatch(game_add(singleData,true))
+                        const games = getState().setting[SettingsKey.games]
+                        games.push(id)
+                        dispatch(Save_info(SettingsKey.games,games))
                     }) 
                 }).catch(res=>{
                     dispatch(game_add("failed",false))
+                    alert("game add failed...")
                 })
 }}
 //del single game

@@ -1,6 +1,8 @@
 //settings action
 export const SAVE_INFO = 'save_info'
 export const LOAD_INFO = 'load_info'
+export const ADD_GAME_INFO = "add_game_info"
+export const DEL_GAME_INFO = "del_game_info"
 
 //game api actions
 

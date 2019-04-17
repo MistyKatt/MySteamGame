@@ -6,12 +6,12 @@ import Gameinfo from './Container/Gameinfo/Gameinfo'
 import Settings from './Container/Settings/Settings'
 
 
+
 class App extends Component {
 
   componentDidMount(){
 
   }
-
   render() {
     return (
       <div className="App">
@@ -19,7 +19,7 @@ class App extends Component {
         <Switch>
           <Route path='/settings' component={Settings}></Route>
           <Route path='/'  component={Gameinfo} ></Route>
-        </Switch>      
+        </Switch>     
       </div>
     );
   }

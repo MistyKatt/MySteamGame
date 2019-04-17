@@ -1,7 +1,7 @@
 import React from 'react'
 import {Table} from 'react-bootstrap'
 import {connect} from 'react-redux'
-import {SettingsKey} from '../../Global/Constant'
+import {Constant} from '../../Global/Constant'
 import ImageLink from '../../Component/Basic/ImageLink/ImageLink'
 import {Game_info, game_del} from '../../Store/Actions/GameinfoAction'
 import {ProgressBar} from 'react-bootstrap'
@@ -13,6 +13,7 @@ class GameinfoTable extends React.Component{
  
     state={
         isLoading:false,
+        noProgressBar:false,
     }
     
     componentDidMount(){
@@ -58,7 +59,8 @@ class GameinfoTable extends React.Component{
     Unsubscribe = (id)=>{
         this.props.gamedel(id);
         this.setState({
-            isLoading:false
+            isLoading:false,
+            noProgressBar:true
         })
     }
 
@@ -80,7 +82,7 @@ class GameinfoTable extends React.Component{
         </tr>})
 
         return(
-        (this.props.count === this.props.gameNames.length)?
+        (this.props.count === this.props.gameNames.length||this.state.noProgressBar)?
         <Table responsive style={style}>
             <thead >
                 <tr>
@@ -101,6 +103,7 @@ class GameinfoTable extends React.Component{
 }
 
 const mapStateToProps = state=>{
+    const SettingsKey = Constant().SettingsKey()
     return{
       gameNames:state.setting[SettingsKey.games],
       isVerified:state.setting[SettingsKey.isVerified],
