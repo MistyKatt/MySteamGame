@@ -12,26 +12,30 @@ const initial = {
 const gameinfoReducer = (state = initial, action)=>{
     switch(action.type){
         case (Actions.GAME_INFO):{
+            let info = {
+                ...state,
+            }
             if(action.success){
-                let info = {
-                    ...state,
-                }
+                
                 info.gameinfo.push(action.gamedata)
                 info.gameinfoCount = info.gameinfoCount+1;
                 return info
             }
-            return state            
+            info.gameinfoCount = info.gameinfoCount+1;
+            return info        
         }
         case (Actions.GAME_FEATURES):{
+            let info={
+                ...state,
+            }
             if(action.success){
-                let info={
-                    ...state,
-                }
+                
                 info.gamefeature = action.gamefeature
                 info.gamefeatureCount = info.gamefeatureCount+1
                 return info
             } 
-            return state    
+            info.gamefeatureCount = info.gamefeatureCount+1
+            return info    
         }
         case (Actions.ADD_GAME):{
             if(action.success){
@@ -60,6 +64,14 @@ const gameinfoReducer = (state = initial, action)=>{
                 }
                               
                 return info   
+        }
+        case (Actions.RESET_COUNT):{
+            return {
+                gameinfo:[],
+                gamefeature:[],
+                gameinfoCount:0,
+                gamefeatureCount:0,
+            }
         }
        /*
         case (Actions.START_LOADING):{

@@ -51,7 +51,7 @@ class FeaturedinfoTable extends React.Component{
         popup.innerHTML = ""
     }
 
-    Subscribe = (id)=>{
+    Subscribe = (e,id)=>{
         let proceed = true;
         this.props.game_in_list.forEach(e=>{
             if(e.id === id)
@@ -67,6 +67,7 @@ class FeaturedinfoTable extends React.Component{
         }
         else
             alert("this game has been added to my list");
+        e.stopPropagation()
     }
 
     render(){
@@ -76,8 +77,8 @@ class FeaturedinfoTable extends React.Component{
         }
 
         const tableBody =this.props.games.map((game)=>
-        <tr className={Style.onhover} key={game.id} onDoubleClick ={()=>{this.showExtraGameInfo(game.id)}}>
-            <td><i onClick={()=>this.Subscribe(game.id)} className="far fa-star" ></i>{game.name}</td>
+        <tr className={Style.onhover} key={game.id} onClick ={()=>{this.showExtraGameInfo(game.id)}}>
+            <td><i onClick={(e)=>this.Subscribe(e,game.id)} className="far fa-star" ></i>{game.name}</td>
             <td>{game.id}</td>
             <td>{game.score}</td>
             <td>{game.discount}</td>
@@ -86,7 +87,7 @@ class FeaturedinfoTable extends React.Component{
         </tr>)
 
         return(
-        (this.props.count === 10||this.state.noProgressBar)?
+        (this.props.count >= 10||this.state.noProgressBar)?
         <Table responsive style={style}>
             <thead>
                 <tr>
@@ -103,7 +104,7 @@ class FeaturedinfoTable extends React.Component{
             </tbody>
         </Table>
         
-        :<ProgressBar className={Style.center} now={10*this.props.count} label={"the feature is loading now... "+10*this.props.count+"%"} />)
+        :<ProgressBar className={Style.center} now={10*this.props.count>=99?99:10*this.props.count} label={"the feature is loading now... "+10*this.props.count>=99?99:10*this.props.count+"%"} />)
     }
 }
 

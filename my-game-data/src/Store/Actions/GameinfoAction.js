@@ -34,14 +34,15 @@ const game_add = (value,success)=>{
 export const game_del = (id)=>{
     const SettingsKey = Constant().SettingsKey()
     return (dispatch,getState)=>{
-        const games = getState().setting[SettingsKey.games]
+        let games = getState().setting[SettingsKey.games].split(',')
         let index = -1;
         games.forEach((e,i)=>{
-            if(id === e)
+            if(id === parseInt(e))
                 index = i
         })
         if(index !== -1)
             games.splice(index, 1)
+        games = games.join(',')
         dispatch(Save_info(SettingsKey.games,games))
         dispatch({
             type:actions.DEL_GAME,
@@ -105,14 +106,14 @@ export const Game_add = (id)=>{
                     axios({method:'get',url:Network.host+"/players/"+id}).then((response)=>{
                         singleData.online = response.data.response.player_count
                         dispatch(game_add(singleData,true))
-                        const games = getState().setting[SettingsKey.games]
-                        games.push(id)
+                        let games = getState().setting[SettingsKey.games]
+                        games = games+","+id
                         dispatch(Save_info(SettingsKey.games,games))
                     }).catch(response=>{
                         singleData.online="unknown"
                         dispatch(game_add(singleData,true))
-                        const games = getState().setting[SettingsKey.games]
-                        games.push(id)
+                        let games = getState().setting[SettingsKey.games]
+                        games = games+","+id
                         dispatch(Save_info(SettingsKey.games,games))
                     }) 
                 }).catch(res=>{

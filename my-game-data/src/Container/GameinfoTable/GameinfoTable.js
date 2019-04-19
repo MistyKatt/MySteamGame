@@ -42,10 +42,9 @@ class GameinfoTable extends React.Component{
 
     showExtraGameInfo = (id)=>{
         const popup = document.getElementById("popup")
-        popup.classList.remove("hiddenPopup")
-        popup.classList.add("showPopup")
-
         popup.innerHTML = "<div class='Wrapper'><iframe class='Frame' src='https://steamdb.info/embed/?appid="+id+ "'scrolling='no' frameborder='0'></iframe></div>"
+        popup.classList.remove("hiddenPopup")
+        popup.classList.add("showPopup")       
         const frame = popup.getElementsByTagName("iframe")[0]
         frame.onmouseout = ()=>this.hideExtraGameInfo(popup)
     }
@@ -56,12 +55,13 @@ class GameinfoTable extends React.Component{
         popup.innerHTML = ""
     }
 
-    Unsubscribe = (id)=>{
+    Unsubscribe = (e,id)=>{
         this.props.gamedel(id);
         this.setState({
             isLoading:false,
             noProgressBar:true
         })
+        e.stopPropagation();
     }
 
     render(){
@@ -72,8 +72,8 @@ class GameinfoTable extends React.Component{
 
         const tableBody = this.props.games.map((game)=>
         {
-        return <tr className={Style.onhover}  key={game.id} onDoubleClick={()=>{this.showExtraGameInfo(game.id)}}>
-            <td><i onClick={()=>this.Unsubscribe(game.id)} className="fas fa-ban"></i>{game.name}</td>
+        return <tr className={Style.onhover}  key={game.id} onClick={()=>{this.showExtraGameInfo(game.id)}}>
+            <td><i onClick={(e)=>this.Unsubscribe(e,game.id)} className="fas fa-ban"></i>{game.name}</td>
             <td>{game.id}</td>
             <td>{game.online}</td>
             <td>{game.score}</td>
@@ -82,7 +82,7 @@ class GameinfoTable extends React.Component{
         </tr>})
 
         return(
-        (this.props.count === this.props.gameNames.length||this.state.noProgressBar)?
+        (this.props.count >= this.props.gameNames.length||this.state.noProgressBar)?
         <Table responsive style={style}>
             <thead >
                 <tr>
@@ -98,14 +98,14 @@ class GameinfoTable extends React.Component{
                 {tableBody}
             </tbody>
         </Table>
-        :<ProgressBar className={Style.center} now={100*this.props.count/this.props.gameNames.length} label={"the game is loading now... "+100*this.props.count/this.props.gameNames.length+"%"} />)
+        :<ProgressBar className={Style.center} now={100*this.props.count/this.props.gameNames.length>=99?99:100*this.props.count/this.props.gameNames.length} label={"the game is loading now... "+100*this.props.count/this.props.gameNames.length>=99?99:100*this.props.count/this.props.gameNames.length+"%"} />)
     }
 }
 
 const mapStateToProps = state=>{
     const SettingsKey = Constant().SettingsKey()
     return{
-      gameNames:state.setting[SettingsKey.games],
+      gameNames:state.setting[SettingsKey.games].split(','),
       isVerified:state.setting[SettingsKey.isVerified],
       games:state.gameinfo.gameinfo,
       count:state.gameinfo.gameinfoCount,
