@@ -8,8 +8,8 @@ const Input = props =>{
     const UI = Constant().UI();
     
     const style = {
-        'margin-left':0,
-        'padding-left':0
+        'marginLeft':0,
+        'paddingLeft':0
 
     }
     return (

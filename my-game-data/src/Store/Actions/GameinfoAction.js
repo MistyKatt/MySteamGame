@@ -54,7 +54,7 @@ export const game_del = (id)=>{
 
 //load game infos
 export const Game_info = (ids)=>{
-    const Network = Constant().Network(true)
+    const Network = Constant().Network(false)
     return dispatch=>{
         ids.forEach(id=>{
             axios.get(Network.host+"/"+id).then(res=>{              
@@ -75,7 +75,7 @@ export const Game_info = (ids)=>{
 
 //load game features
 export const Game_feature = ()=>{
-    const Network = Constant().Network(true)
+    const Network = Constant().Network(false)
     return dispatch =>{
         axios.get(Network.host+"/featured").then(res=>{              
             const games = aggregateFeature(res.data.featured_win)
@@ -99,7 +99,7 @@ export const Game_feature = ()=>{
 //load single game
 export const Game_add = (id)=>{
     const SettingsKey= Constant().SettingsKey()
-    const Network = Constant().Network(true)
+    const Network = Constant().Network(false)
     return (dispatch,getState) =>{
             axios.get(Network.host+"/"+id).then(res=>{              
                     const singleData = aggregateGame(res.data[id].data)

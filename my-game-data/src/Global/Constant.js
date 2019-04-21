@@ -23,7 +23,7 @@ export const Constant =()=>{
         },
         Network:(isLocal)=>{
             return{
-                host:isLocal?"http://localhost:8080":"https://us-central1-react-learn-65818.cloudfunctions.net/webApi"
+                host:isLocal?"http://localhost:8080":"https://us-central1-mysteam-info.cloudfunctions.net/webApi"
             }
         },
         

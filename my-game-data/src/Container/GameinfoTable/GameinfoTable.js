@@ -74,7 +74,6 @@ class GameinfoTable extends React.Component{
         {
         return <tr className={Style.onhover}  key={game.id} onClick={()=>{this.showExtraGameInfo(game.id)}}>
             <td><i onClick={(e)=>this.Unsubscribe(e,game.id)} className="fas fa-ban"></i>{game.name}</td>
-            <td>{game.id}</td>
             <td>{game.online}</td>
             <td>{game.score}</td>
             <td>{game.price}</td>
@@ -87,7 +86,6 @@ class GameinfoTable extends React.Component{
             <thead >
                 <tr>
                     <th>Games</th>
-                    <th>AppId</th>
                     <th>Online</th>
                     <th>hot index</th>
                     <th>Price (CAD)</th>

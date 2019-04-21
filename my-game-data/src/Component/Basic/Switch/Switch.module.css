@@ -2,5 +2,16 @@
     display:inline-block;
 }
 
+.oneline{
+    display: flex;
+    justify-content: space-between;
+    width:70%;
+}
+
+.oneline span{
+    display: inline-flex;
+    align-items: center;
+}
+
 
 

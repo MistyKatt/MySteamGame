@@ -21,11 +21,11 @@ class Settings extends React.Component{
                 </div>
                 <div className={SettingStyle.section}>
                     <StaticText value="Selected Game" type={UI.HEADER}></StaticText>
-                    <Switch onSave={this.props.saveInfo} valueType={SettingsKey.games} value={this.props.games} type={UI.TEXTBOX} text="Games"></Switch>
+                    <Switch onSave={this.props.saveInfo} valueType={SettingsKey.games} value={this.props.games} type={UI.SINGLELINE} text="Games"></Switch>
                 </div>
                 <div className={SettingStyle.section}>
                     <StaticText value="Selected Area" type={UI.HEADER}></StaticText>
-                    <Switch onSave={this.props.saveInfo} valueType={SettingsKey.gametypes} value={this.props.gametypes} type={UI.TEXTBOX} text="Game Areas"></Switch>
+                    <Switch onSave={this.props.saveInfo} valueType={SettingsKey.gametypes} value={this.props.gametypes} type={UI.SINGLELINE} text="Game Areas"></Switch>
                 </div>
             </div>
         )
@@ -45,7 +45,7 @@ const mapStoreToProps = state=>{
 
 const mapDispatchToProps = dispatch =>{
     return {
-        saveInfo:(type,value)=>dispatch(Save_info(type,value)),
+        saveInfo:(type,value)=>dispatch(Save_info(type,value,true)),
     }
 }
 

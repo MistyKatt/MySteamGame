@@ -19,13 +19,15 @@ const load_info = (value,success)=>{
     }
 }
 
-export const Save_info = (type,value)=>{
+export const Save_info = (type,value,reset = false)=>{
     return dispatch=>{
         const updateVal={}
         updateVal[type] = value
-        dispatch({
-            type:actions.RESET_COUNT
-        })
+        if(reset){
+            dispatch({
+                type:actions.RESET_COUNT
+            })
+        }
         firebase.database().ref('/tokens/t_123/settings').update(updateVal).then(res=>{
             console.log("save success")
             dispatch(save_info(type,value))

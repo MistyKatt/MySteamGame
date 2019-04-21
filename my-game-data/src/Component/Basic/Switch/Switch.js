@@ -29,8 +29,10 @@ class Switch extends React.Component{
           return(
               <div className={SwitchStyle.oneline}>
                 <Input change={this.onChange} value={this.state.curVal} text={this.props.text} type={this.props.type}></Input>
-                <Button variant="link" onClick={()=>{this.props.onSave(this.props.valueType,this.state.curVal);this.setState({isEdit:false})}}>Save</Button>
-                <Button variant="link" onClick={()=>this.setState({isEdit:false})}>Cancel</Button>
+                <span>
+                  <Button variant="link" onClick={()=>{this.props.onSave(this.props.valueType,this.state.curVal);this.setState({isEdit:false})}}>Save</Button>
+                  <Button variant="link" onClick={()=>this.setState({isEdit:false})}>Cancel</Button>
+                </span>
               </div>
           )
         else{
