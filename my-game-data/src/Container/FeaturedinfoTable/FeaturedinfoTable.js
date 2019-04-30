@@ -17,7 +17,7 @@ class FeaturedinfoTable extends React.Component{
     }
     
     componentDidMount(){    
-        if(this.props.isVerified === true&&this.props.count === 0&&this.state.isLoading === false)
+        if(this.props.isMount=== true&&this.props.count === 0&&this.state.isLoading === false)
         {
             this.props.gamefeature();
             this.setState({
@@ -27,7 +27,7 @@ class FeaturedinfoTable extends React.Component{
     }
 
     componentDidUpdate(){    
-        if(this.props.isVerified === true&&this.props.count=== 0&&this.state.isLoading === false)
+        if(this.props.isMount === true&&this.props.count=== 0&&this.state.isLoading === false)
         {
             this.props.gamefeature();
             this.setState({
@@ -52,21 +52,34 @@ class FeaturedinfoTable extends React.Component{
     }
 
     Subscribe = (e,id)=>{
-        let proceed = true;
-        this.props.game_in_list.forEach(e=>{
-            if(e.id === id)
-                proceed = false
-        })
-        if(proceed)
-        {
-            this.props.gameadd(id)
-            this.setState({
-                isLoading:false,
-                noProgressBar:true,
+        const Promises = Constant().Verify(this.props.token)
+        Promises.then(res=>{
+          if(res.data === "success")
+          {
+            let proceed = true;
+            this.props.game_in_list.forEach(e=>{
+                if(e.id === id)
+                    proceed = false
             })
-        }
-        else
-            alert("this game has been added to my list");
+            if(proceed)
+            {
+                this.props.gameadd(id)
+                this.setState({
+                    isLoading:false,
+                    noProgressBar:true,
+                })
+            }
+    
+            else
+                alert("this game has been added to my list");
+          }
+          else
+          {
+            Constant().Popup();
+          }
+        }).catch(err=>{
+          Constant().Popup();
+        })
         e.stopPropagation()
     }
 
@@ -113,10 +126,11 @@ class FeaturedinfoTable extends React.Component{
 const mapStateToProps = state=>{
     const SettingsKey = Constant().SettingsKey()
     return{
-      isVerified:state.setting[SettingsKey.isVerified],
       count:state.gameinfo.gamefeatureCount,
       games:state.gameinfo.gamefeature,
-      game_in_list:state.gameinfo.gameinfo
+      game_in_list:state.gameinfo.gameinfo,
+      isMount:state.setting[SettingsKey.isMount],
+      token:state.setting[SettingsKey.usertoken]
     }
 }
 

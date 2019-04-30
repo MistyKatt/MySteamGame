@@ -5,10 +5,10 @@ const initial = {}
 const SettingsKey = Constant().SettingsKey();
 initial[SettingsKey.username] = ""
 initial[SettingsKey.useremail] = ""
-initial[SettingsKey.usertoken] = "123"
+initial[SettingsKey.usertoken] = ""
 initial[SettingsKey.games] = ""
 initial[SettingsKey.gametypes] = []
-initial[SettingsKey.isVerified]=false
+initial[SettingsKey.isMount] = false
 
 
 
@@ -31,18 +31,18 @@ const settingReducer = (state = initial, action)=>{
                 info[SettingsKey.useremail] = action.value[SettingsKey.useremail]
                 info[SettingsKey.games] = action.value[SettingsKey.games]
                 info[SettingsKey.gametypes] = action.value[SettingsKey.gametypes] 
-                info[SettingsKey.isVerified] = true
+                info[SettingsKey.isMount] = true
                 return info
             }
             else{
                 let info = {
                     ...state
                 } 
-                info[SettingsKey.isVerified] = false
                 info[SettingsKey.username] = "unknown"
                 info[SettingsKey.useremail] = "unknown"
-                info[SettingsKey.games] = "570"
+                info[SettingsKey.games] = ""
                 info[SettingsKey.gametypes] = ["speed"]
+                info[SettingsKey.isMount] = false
                 return info
             }
            

@@ -10,9 +10,11 @@ import {Route} from 'react-router-dom'
 
 class Gameinfo extends React.Component{
  
+    
     componentDidMount(){
         this.props.loadSettings();
     }
+    
     
     render(){
         return(
@@ -28,12 +30,12 @@ class Gameinfo extends React.Component{
 const mapStateToProps = state=>{
     const SettingsKey = Constant().SettingsKey()
     return{
-      isVerified:state.setting[SettingsKey.isVerified],
       username:   state.setting[SettingsKey.username] ,
       useremail:  state.setting[SettingsKey.useremail],
       usertoken:state.setting[SettingsKey.usertoken],
       games:state.setting[SettingsKey.games],
-      gametypes:state.setting[SettingsKey.gametypes]
+      gametypes:state.setting[SettingsKey.gametypes],
+      isMount:state.setting[SettingsKey.isMount]
     }
 }
 

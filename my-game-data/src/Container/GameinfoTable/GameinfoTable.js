@@ -17,7 +17,7 @@ class GameinfoTable extends React.Component{
     }
     
     componentDidMount(){
-        if(this.props.isVerified === true&& this.state.isLoading === false&& this.props.count === 0){
+        if(this.props.isMount === true&& this.state.isLoading === false&& this.props.count === 0){
              const appIds = this.props.gameNames
              if(appIds.length>0){
                  this.setState({
@@ -29,7 +29,7 @@ class GameinfoTable extends React.Component{
      }
 
     componentDidUpdate(){
-        if(this.props.isVerified === true && this.state.isLoading === false && this.props.count === 0){
+        if(this.props.isMount === true && this.state.isLoading === false && this.props.count === 0){
             const appIds = this.props.gameNames
             if(appIds.length>0){
                 this.setState({
@@ -56,10 +56,22 @@ class GameinfoTable extends React.Component{
     }
 
     Unsubscribe = (e,id)=>{
-        this.props.gamedel(id);
-        this.setState({
-            isLoading:false,
-            noProgressBar:true
+        const Promises = Constant().Verify(this.props.token)
+        Promises.then(res=>{
+          if(res.data === "success")
+          {
+            this.props.gamedel(id);
+            this.setState({
+                isLoading:false,
+                noProgressBar:true
+            })
+          }
+          else
+          {
+            Constant().Popup();
+          }
+        }).catch(err=>{
+          Constant().Popup();
         })
         e.stopPropagation();
     }
@@ -104,9 +116,10 @@ const mapStateToProps = state=>{
     const SettingsKey = Constant().SettingsKey()
     return{
       gameNames:state.setting[SettingsKey.games].split(','),
-      isVerified:state.setting[SettingsKey.isVerified],
       games:state.gameinfo.gameinfo,
       count:state.gameinfo.gameinfoCount,
+      isMount:state.setting[SettingsKey.isMount],
+      token:state.setting[SettingsKey.usertoken]
     }
 }
 

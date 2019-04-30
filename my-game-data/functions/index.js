@@ -22,6 +22,18 @@ app.all('*',function (req, res, next) {
       next();
     }
   });
+  
+app.get('/verify/:token',(req,response)=>{
+  const token = req.params["token"];
+  axios.get("https://react-learn-65818.firebaseio.com/tokens/t_123/settings/usertoken.json").then(res=>{
+     if(parseInt(res.data) === parseInt(token))
+       response.send("success");
+     else
+       response.send("failed");
+  }).catch(err=>{
+       response.send("failed");
+  })
+})
 
   app.get('/searchid/:appname',(req,res)=>{
     var appname =new String(req.params["appname"].replace(' ','+'));

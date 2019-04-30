@@ -15,7 +15,7 @@ class MessageBlock extends React.Component{
     render(){
         return(
             <Alert  className={MessageBlockStyle.inlineBlock} variant='light'>
-                {this.props.isVerified?null:<p>whoops, you are not verified, most likely, there is a network issue</p>}
+                {this.props.isMount?null:<p>whoops, you are not verified, most likely, there is a network issue</p>}
             </Alert>
         )
     }
